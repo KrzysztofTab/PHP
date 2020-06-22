@@ -66,7 +66,14 @@
 			{
 				$wszystko_OK=false;
 				$_SESSION['e_bot']="Potwierdź, że nie jesteś botem !";
-			}		
+			}	
+
+				// zapamietanie wprowadzonych danych
+		$_SESSION['fr_nick'] = $nick;
+		$_SESSION['fr_email'] = $email;
+		$_SESSION['fr_haslo1'] = $haslo1;
+		$_SESSION['fr_haslo2'] = $haslo2;
+		if (isset($_POST['regulamin'])) $_SESSION['fr_regulamin'] = true;		
 
 		require_once "connect.php";
 		mysqli_report(MYSQLI_REPORT_STRICT);
@@ -147,7 +154,13 @@
 	<form method="post">
 		<br/><br/>
 		
-		<b>Nickname:</b><br /> <input type="text" name="nick"/><br/>
+		<b>Nickname:</b><br /> <input type="text"value="<?php
+			if (isset($_SESSION['fr_nick']))
+			{
+				echo $_SESSION['fr_nick'];
+				unset($_SESSION['fr_nick']);
+			}
+		?>" 	name="nick"/><br/>
 		<i><small>Od 3 do 20 znaków; litery i cyfry;<br/>bez polskich znaków</small></i><br/>
 			<?php
 				if (isset($_SESSION['e_nick']))
@@ -158,7 +171,13 @@
 			?>
 		<br/>
 
-		<b>E-mail:</b> <br /> <input type="text" name="email"/><br />
+		<b>E-mail:</b> <br /> <input type="text" value="<?php
+			if (isset($_SESSION['fr_email']))
+			{
+				echo $_SESSION['fr_email'];
+				unset($_SESSION['fr_email']);
+			}
+		?>"name="email"/><br />
 		<i><small>Adres E-mail @</small></i>
 		<br/>
 			<?php
@@ -170,7 +189,13 @@
 			?>
 		<br/>	
 
-		<b>Hasło:</b> <br /> <input type="password" name="haslo1"/> <br />
+		<b>Hasło:</b> <br /> <input type="password"value="<?php
+			if (isset($_SESSION['fr_haslo1']))
+			{
+				echo $_SESSION['fr_haslo1'];
+				unset($_SESSION['fr_haslo1']);
+			}
+		?>" name="haslo1"/> <br />
 		<i><small>Od 8 do 20 znaków; litery i cyfry;<br/>bez polskich znaków</small></i><br/>
 			<?php
 				if (isset($_SESSION['e_haslo']))
@@ -181,19 +206,31 @@
 			?>
 		<br/>	
 
-		<b>Powtórz Hasło:</b> <br/> <input type="password" name="haslo2" /> <br /><br />
+		<b>Powtórz Hasło:</b> <br/> <input type="password" value="<?php
+			if (isset($_SESSION['fr_haslo2']))
+			{
+				echo $_SESSION['fr_haslo2'];
+				unset($_SESSION['fr_haslo2']);
+			}
+		?>" name="haslo2" /> <br /><br />
 			
 		<label>
-		<input type="checkbox" name="regulamin"/> <i><b>Akceptuj regulamin</b></i>
+		<input type="checkbox" name="regulamin"<?php
+			if(isset($_SESSION['fr_regulamin']))
+			{
+				echo "checked";
+				unset($_SESSION['fr_regulamin']);
+			}
+
+		?>/> <i><b>Akceptuj regulamin</b></i>
 		</label>
 			<?php
-				if (isset($_SESSION['e_regulamin']))
-				{
-					echo '<div class="error">'.$_SESSION['e_regulamin'].'</div>';
-					unset($_SESSION['e_regulamin']);
-				}
-			?>
-
+			if (isset($_SESSION['e_regulamin']))
+			{
+				echo '<div class="error">'.$_SESSION['e_regulamin'].'</div>';
+				unset($_SESSION['e_regulamin']);
+			}
+		?>	
 		<br /><br />
 			<!-- jawny klucz witryny-->
 		<div class="g-recaptcha" data-sitekey="6Lf14aYZAAAAABJ1aUmWtrJJ29CnNY7vmnQd9hmU"></div>
